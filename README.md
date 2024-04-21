@@ -1,5 +1,5 @@
 # VCF-workflow
-<img src="https://i0.wp.com/securityaffairs.com/wp-content/uploads/2015/02/DNA-cryptography.jpg?fit=600%2C337&ssl=1" width="650"/>
+<img src="https://i0.wp.com/securityaffairs.com/wp-content/uploads/2015/02/DNA-cryptography.jpg?fit=600%2C337&ssl=1" width="1650"/>
 
 ## Initial analysis
 
