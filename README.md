@@ -88,3 +88,47 @@ mkdir -p ${path}/reads_fastqc_results/fastqc_docs
 echo "Saving summary..."
 cat */summary.txt > ${path}/reads_fastqc_results/fastqc_docs/fastqc_summaries.txt
 ```
+Step 4: Run Variant call analysis
+
+```bash
+#!/bin/bash
+set -e
+
+path=$(pwd)
+
+mkdir -p ${path}/results
+cd ${path}/results
+
+genome=${path}/ref_genome/ncbi_dataset/data/GCF_003025095.1/GCF_003025095.1_Triha_v1.0_genomic.fna
+
+bwa index $genome
+
+mkdir -p sam bam bcf vcf
+
+for fq1 in ~/trichoderma/*_R1.trim.fastq
+do
+    echo "working with file $fq1"
+
+    base=$(basename ${fq1} _R1.trim.fastq)
+    echo "base name is $base"
+
+    fq1=~/trichoderma/${base}_R1.trim.fastq
+    fq2=~/trichoderma/${base}_R2.trim.fastq
+    sam=~/trichoderma/results/sam/${base}.aligned.sam
+    bam=~/trichoderma/results/bam/${base}.aligned.bam
+    sorted_bam=~/trichoderma/results/bam/${base}.aligned.sorted.bam
+    raw_bcf=~/trichoderma/results/bcf/${base}_raw.bcf
+    variants=~/trichoderma/results/vcf/${base}_variants.vcf
+    final_variants=~/trichoderma/results/vcf/${base}_final_variants.vcf 
+
+    bwa mem $genome $fq1 $fq2 > $sam
+    samtools view -S -b $sam > $bam
+    samtools sort -o $sorted_bam $bam
+    samtools index $sorted_bam
+    bcftools mpileup -O b -o $raw_bcf -f $genome $sorted_bam
+    bcftools call --ploidy 1 -m -v -o $variants $raw_bcf 
+    vcfutils.pl varFilter $variants > $final_variants
+done
+echo "Variant Calling Workflow Done!"
+echo "Check RESULTS on the results directory"
+```
