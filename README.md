@@ -64,6 +64,7 @@ done
 
 echo "Trimmomatic done!"
 ```
+
 Step 3: Second Quality check with FastQC
 ```bash
 #!/bin/bash
@@ -88,8 +89,9 @@ mkdir -p ${path}/reads_fastqc_results/fastqc_docs
 echo "Saving summary..."
 cat */summary.txt > ${path}/reads_fastqc_results/fastqc_docs/fastqc_summaries.txt
 ```
-Step 4: Run Variant call analysis
 
+Step 4: Run Variant call analysis <br>
+ Identify genetic variations, such as single nucleotide polymorphisms (SNPs) and small insertions or deletions (indels), by comparing sequencing data to a reference genome.
 ```bash
 #!/bin/bash
 set -e
